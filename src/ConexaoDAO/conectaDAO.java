@@ -15,7 +15,7 @@ Properties props = new Properties();
 
 try {
 
-FileInputStream fs = new FileInputStream("src/database.properties");
+FileInputStream fs = new FileInputStream("database.properties");
 props.load(fs);
 
 String user = props.getProperty("db.user");

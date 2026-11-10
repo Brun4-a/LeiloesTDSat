@@ -10,36 +10,58 @@ package ConexaoDAO;
  * @author Adm
  */
 
-import ProdutosDTO.ProdutosDTO;
-import java.sql.PreparedStatement;
+import Dto.ProdutosDTO;
+import ConexaoDAO.conectaDAO;
 import java.sql.Connection;
-import javax.swing.JOptionPane;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java. sql.SQLException;
 import java.util.ArrayList;
+import javax.swing.JOptionPane;
+
 
 
 public class ProdutosDAO {
     
     Connection conn;
-    PreparedStatement prep;
+    PreparedStatement prepare;
     ResultSet resultset;
     ArrayList<ProdutosDTO> listagem = new ArrayList<>();
     
-    public void cadastrarProduto (ProdutosDTO produto){
+    public boolean cadastrarProduto(ProdutosDTO produto){
+        conectaDAO conecta = new conectaDAO();
+        conn = conecta.connectDB();
+        String sql = "INSERT INTO produtos (nome, valor, status) VALUES (?, ?, ?)";
         
-        
-        //conn = new conectaDAO().connectDB();
-        
-        
+        try{
+            prepare = conn.prepareStatement(sql);
+            prepare.setString(1, produto.getNome());
+            prepare.setInt(2, produto.getValor());
+            prepare.setString(3, produto.getStatus());
+            
+            prepare.execute();
+            return true;
+            
+        }catch(SQLException erro) {
+            
+            JOptionPane.showMessageDialog(null, "Erro ao cadastrar no banco: " + erro.getMessage());
+            return false;
+            
+        }finally{
+            try{ if(prepare != null) prepare.close(); 
+        }catch(Exception e){}
+            try{ if(conn != null) conn.close(); } catch (Exception e) {}
+        }
     }
     
     public ArrayList<ProdutosDTO> listarProdutos(){
-        
         return listagem;
+    }
+  
     }
     
     
     
         
-}
+
 

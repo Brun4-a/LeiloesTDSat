@@ -1,4 +1,4 @@
-package ProdutosDTO;
+package Dto;
 
 /*
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license

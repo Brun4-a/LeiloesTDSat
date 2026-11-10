@@ -1,7 +1,7 @@
 package PacoteView;
 
 
-import ProdutosDTO.ProdutosDTO;
+import Dto.ProdutosDTO;
 import ConexaoDAO.ProdutosDAO;
 
 /*
@@ -146,17 +146,35 @@ public class cadastroVIEW extends javax.swing.JFrame {
     }//GEN-LAST:event_cadastroNomeActionPerformed
 
     private void btnCadastrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCadastrarActionPerformed
-        ProdutosDTO produto = new ProdutosDTO();
-        String nome = cadastroNome.getText();
-        String valor = cadastroValor.getText();
-        String status = "A Venda";
-        produto.setNome(nome);
-        produto.setValor(Integer.parseInt(valor));
-        produto.setStatus(status);
-        
-        ProdutosDAO produtodao = new ProdutosDAO();
-        produtodao.cadastrarProduto(produto);
-        
+      ProdutosDTO produto = new ProdutosDTO();
+      String nome = cadastroNome.getText();
+      String valorStr = cadastroValor.getText();
+      String status = "A venda";
+      
+      if(nome.trim().isEmpty() || valorStr.trim().isEmpty()){
+          javax.swing.JOptionPane.showMessageDialog(null, "Por favor, preencha todos os campos!");
+          return;
+      }
+          try{
+              produto.setNome(nome);
+              produto.setValor(Integer.parseInt(valorStr));
+              produto.setStatus(status);
+              
+              ProdutosDAO produtodao = new ProdutosDAO();
+              boolean sucesso = produtodao.cadastrarProduto(produto);
+              
+              if(sucesso){
+                  javax.swing.JOptionPane.showMessageDialog(null, "Produto cadastrado com sucesso!");
+                  
+                  cadastroNome.setText("");
+                  cadastroValor.setText("");
+              
+              }else{
+                  javax.swing.JOptionPane.showMessageDialog(null, "Erro ao realizar o cadastro do produto.");
+              }
+          }catch(NumberFormatException e){
+              javax.swing.JOptionPane.showMessageDialog(null, "Por favor, insira um valor numérico válido");
+          }
     }//GEN-LAST:event_btnCadastrarActionPerformed
 
     private void btnProdutosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnProdutosActionPerformed
